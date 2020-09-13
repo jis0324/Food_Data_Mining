@@ -1,0 +1,6 @@
+scrapy
+scrapy-rotated-proxy
+scrapy-user-agents
+psycopg2
+requests
+selenium
