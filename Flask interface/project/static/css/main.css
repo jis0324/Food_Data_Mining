@@ -25,6 +25,18 @@ body {
     color : #9933ff;
 }
 
+td, th {
+    text-align: center;
+}
+
+td {
+    vertical-align: middle!important;
+}
+
+.cursor-pointer {
+    cursor: pointer;
+}
+
 section.loading-section {
     width: 100%;
     height: 100vh;
@@ -135,11 +147,15 @@ section.loading-section {
     text-align: right;
 }
 .onoffswitch-switch {
-    display: block; width: 18px; margin: 10px;
+    display: block;
+    width: 18px;
+    margin: 10px;
     background: #FFFFFF;
-    position: absolute; top: 0; bottom: 0;
+    position: absolute; top: 0;
+    bottom: 0;
     right: 48px;
-    border: 2px solid #999999; border-radius: 20px;
+    border: 2px solid #999999;
+    border-radius: 20px;
     transition: all 0.3s ease-in 0s;
 }
 .onoffswitch-checkbox:checked + .onoffswitch-label .onoffswitch-inner {

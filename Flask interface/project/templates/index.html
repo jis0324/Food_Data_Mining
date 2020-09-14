@@ -58,8 +58,6 @@
                             <a class="dropdown-item" href="#" data-value="last_price">Last Price</a>
                             <a class="dropdown-item" href="#" data-value="current_price">Current Price</a>
                             <a class="dropdown-item" href="#" data-value="discount">% Discount</a>
-                            <a class="dropdown-item" href="#" data-value="bookmark">Bookmark</a>
-                            <a class="dropdown-item" href="#" data-value="exclude">Exclude</a>
                         </div>
                     </div>
                     <input type="text" class="global-filter-input form-control" aria-label="Text input with dropdown button" placeholder="Global Search">
@@ -71,21 +69,21 @@
                     <div class="input-group-prepend">
                         <span class="input-group-text pink-bg">Category</span>
                     </div>
-                    <input type="text" class="form-control" placeholder="Category Filter">
+                    <input type="text" class="form-control category_filter_input" placeholder="Category Filter">
                 </div>
 
                 <div class="brand-filter-wrapper input-group col-lg-3 col-md-6 col-sm-12 mb-3">
                     <div class="input-group-prepend">
                         <span class="input-group-text pink-bg">Brand</span>
                     </div>
-                    <input type="text" class="form-control" placeholder="Brand Filter">
+                    <input type="text" class="form-control brand_filter_input" placeholder="Brand Filter">
                 </div>
 
                 <div class="website-filter-wrapper input-group col-lg-3 col-md-6 col-sm-12 mb-3">
                     <div class="input-group-prepend">
                         <span class="input-group-text pink-bg">Website</span>
                     </div>
-                    <input type="text" class="form-control" placeholder="Website URL Filter">
+                    <input type="text" class="form-control website_filter_input" placeholder="Website URL Filter">
                 </div>
 
                 <div class="input-group col-lg-3 col-md-6 col-sm-12 mb-3 justify-content-between">
@@ -113,34 +111,26 @@
                             <th>Category</th>
                             <th>Last Price</th>
                             <th>Current Price</th>
-                            <th>% Discount</th>
+                            <th>Discount(%)</th>
                             <th>Bookmark</th>
                             <th>Exclude</th>
                         </tr>
                     </thead>
                     <tbody>
                         {% for product in data %}
-                            <tr data-id="{{product[0]}}">
+                            <tr class="tr-row" data-id="{{product[0]}}">
                                 <td>{{product[4]}}</td>
                                 <td>{{product[3]}}</td>
                                 <td>{{product[7]}}</td>
                                 <td>{{product[6]}}</td>
                                 <td>{{product[16]}}</td>
-                                <td>{{product[17]}}</td>
-                                <td>{{product[18]}}</td>
+                                <td>{{'%0.2f'| format(product[17]|float)}}</td>
+                                <td>{{'%0.2f'| format(product[18]|float)}}</td>
                                 <td>
-                                    {% if product[14] %}
-                                        <i class="fa fa-bookmark pink-color" aria-hidden="true"></i>
-                                    {% else %}
-                                        <i class="fa fa-bookmark-o" aria-hidden="true"></i>
-                                    {% endif %}
+                                    <i class="bookmark-icon fa {% if product[14] %} fa-bookmark pink-color {% else %} fa-bookmark-o {% endif %} cursor-pointer" aria-hidden="true"><span class="d-none">{% if product[14] %} bookmarked {% endif %}</span></i>
                                 </td>
                                 <td>
-                                    {% if product[15] %}
-                                        <i class="fa fa-times text-danger" aria-hidden="true"></i>
-                                    {% else %}
-                                        <i class="fa fa-times" aria-hidden="true"></i>
-                                    {% endif %}
+                                    <i class="exclude-icon fa fa-times {% if product[15] %} text-danger {% endif %} cursor-pointer" aria-hidden="true"><span class="d-none">{% if product[15] %} exclude {% endif %}</span></i>
                                 </td>
                             </tr>
                         {%endfor%}
