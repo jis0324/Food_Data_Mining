@@ -75,7 +75,7 @@ $(document).ready(function () {
     // click bookmark
     $("#products_table").on("click", ".tr-row td .bookmark-icon", function () {
         let bookmark_icon = $(this);
-        let product_uid = bookmark_icon.parent().parent().data('id');
+        let product_uid = bookmark_icon.parent().parent().attr('id');
 
         if (bookmark_icon.hasClass("fa-bookmark-o")) {
             $.ajax({
@@ -84,12 +84,54 @@ $(document).ready(function () {
                 data: JSON.stringify({'uid' : product_uid}),
                 contentType: 'application/json;charset=UTF-8',
             }).done(function (response) {
-                bookmark_icon.removeClass("fa-bookmark-o");
-                bookmark_icon.addClass("fa-bookmark");
-                bookmark_icon.addClass("pink-color");
-                bookmark_icon.find('span').html('bookmarked');
-                table.draw();
+                if (response == 'False') {
+                    alert("Raised Some Error!, Please try again.")
+                } else {
+                    response = JSON.parse(response);
 
+                    let first_td = "<td>"+response[4]+"</td>";
+                    let second_td = "<td>"+response[3]+"</td>";
+                    let third_td = "<td>"+response[7]+"</td>";
+                    let fourth_td = "<td>"+response[6]+"</td>";
+
+                    let fifth_td = "";
+                    if (response[16]) {
+                        fifth_td = "<td>"+response[16]+"</td>"
+                    } else {
+                        fifth_td = "<td></td>"
+                    }
+
+                    let sixth_td = "";
+                    if (response[17]) {
+                        sixth_td = "<td>"+response[17]+"</td>"
+                    } else {
+                        sixth_td = "<td></td>"
+                    }
+
+                    let seventh_td = "";
+                    if (response[18]) {
+                        seventh_td = "<td>"+response[18]+"</td>"
+                    } else {
+                        seventh_td = "<td></td>"
+                    }
+
+                    let eighth_td = ''
+                    if (response[14]) {
+                        eighth_td = "<td><i class='bookmark-icon fa fa-bookmark pink-color cursor-pointer' aria-hidden='true'><span class='d-none'>bookmarked</span></i></td>";
+                    } else {
+                        eighth_td = "<td><i class='bookmark-icon fa fa-bookmark-o cursor-pointer' aria-hidden='true'><span class='d-none'></span></i></td>";
+                    }
+
+                    let ninth_td = ''
+                    if (response[15]) {
+                        ninth_td = "<td><i class='exclude-icon fa fa-times text-danger' aria-hidden='true'><span class=d-none>exclude</span></i></td>";
+                    } else {
+                        ninth_td = "<td><i class='exclude-icon fa fa-times' aria-hidden='true'><span class='d-none'></span></i></td>";
+                    }
+
+                    let tr_row = [first_td, second_td, third_td, fourth_td, fifth_td, sixth_td, seventh_td, eighth_td, ninth_td]
+                    table.row("#" + product_uid).data(tr_row).invalidate().draw()
+                }
             });
         } else {
             $.ajax({
@@ -98,11 +140,54 @@ $(document).ready(function () {
                 data: JSON.stringify({'uid' : product_uid}),
                 contentType: 'application/json;charset=UTF-8',
             }).done(function (response) {
-                bookmark_icon.addClass("fa-bookmark-o");
-                bookmark_icon.removeClass("fa-bookmark");
-                bookmark_icon.removeClass("pink-color");
-                bookmark_icon.find('span').html('');
-                table.draw();
+                if (response == 'False') {
+                    alert("Raised Some Error!, Please try again.")
+                } else {
+                    response = JSON.parse(response);
+
+                    let first_td = "<td>"+response[4]+"</td>";
+                    let second_td = "<td>"+response[3]+"</td>";
+                    let third_td = "<td>"+response[7]+"</td>";
+                    let fourth_td = "<td>"+response[6]+"</td>";
+
+                    let fifth_td = "";
+                    if (response[16]) {
+                        fifth_td = "<td>"+response[16]+"</td>"
+                    } else {
+                        fifth_td = "<td></td>"
+                    }
+
+                    let sixth_td = "";
+                    if (response[17]) {
+                        sixth_td = "<td>"+response[17]+"</td>"
+                    } else {
+                        sixth_td = "<td></td>"
+                    }
+
+                    let seventh_td = "";
+                    if (response[18]) {
+                        seventh_td = "<td>"+response[18]+"</td>"
+                    } else {
+                        seventh_td = "<td></td>"
+                    }
+
+                    let eighth_td = ''
+                    if (response[14]) {
+                        eighth_td = "<td><i class='bookmark-icon fa fa-bookmark pink-color cursor-pointer' aria-hidden='true'><span class='d-none'></span></i></td>";
+                    } else {
+                        eighth_td = "<td><i class='bookmark-icon fa fa-bookmark-o cursor-pointer' aria-hidden='true'><span class='d-none'></span></i></td>";
+                    }
+
+                    let ninth_td = ''
+                    if (response[15]) {
+                        ninth_td = "<td><i class='exclude-icon fa fa-times text-danger' aria-hidden='true'><span class=d-none>exclude</span></i></td>";
+                    } else {
+                        ninth_td = "<td><i class='exclude-icon fa fa-times' aria-hidden='true'><span class='d-none'></span></i></td>";
+                    }
+
+                    let tr_row = [first_td, second_td, third_td, fourth_td, fifth_td, sixth_td, seventh_td, eighth_td, ninth_td]
+                    table.row("#" + product_uid).data(tr_row).invalidate().draw()
+                }
             });
         }
     });
@@ -110,7 +195,7 @@ $(document).ready(function () {
     // click exclude
     $("#products_table").on("click", ".tr-row td .exclude-icon", function () {
         let exclude_icon = $(this);
-        let product_uid = exclude_icon.parent().parent().data('id');
+        let product_uid = exclude_icon.parent().parent().attr('id');
 
         if (exclude_icon.hasClass("text-danger")) {
             $.ajax({
@@ -154,8 +239,6 @@ $.fn.dataTable.ext.search.push(
             for (let i=0; i < data.length; i++) {
                 if (data[i].includes(filter_key)) {
                     if (interface_bookmark_flag) {
-                        console.log(data[7],'bookmarked')
-                        console.log(data[7].includes('bookmarked'))
                         if (data[7].includes('bookmarked')) {
                             return true
                         }

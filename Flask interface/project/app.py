@@ -4,7 +4,7 @@ import psycopg2
 from configparser import ConfigParser
 import os
 import traceback
-import time
+import json
 
 app = Flask(__name__)
 cursor = None
@@ -27,8 +27,12 @@ def add_bookmark():
   try:
     sql_update_query = """Update catalogues set bookmark = %s where uid = %s"""
     cursor.execute(sql_update_query, (True, request.json['uid']))
-
-    return 'True'
+    cursor.execute("SELECT * FROM catalogues WHERE uid = %s", (request.json['uid'],))
+    row = cursor.fetchone()
+    row = list(row)
+    row[21] = str(row[21])
+    row[20] = str(row[20])
+    return json.dumps(row)
   except:
     print(traceback.print_exc())
     return 'False'
@@ -38,7 +42,12 @@ def remove_bookmark():
   try:
     sql_update_query = """Update catalogues set bookmark = %s where uid = %s"""
     cursor.execute(sql_update_query, (False, request.json['uid']))
-
+    cursor.execute("SELECT * FROM catalogues WHERE uid = %s", (request.json['uid'],))
+    row = cursor.fetchone()
+    row = list(row)
+    row[21] = str(row[21])
+    row[20] = str(row[20])
+    return json.dumps(row)
     return 'True'
   except:
     print(traceback.print_exc())

@@ -8,12 +8,10 @@
     <title></title>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-<!--    <link rel="shortcut icon" type="image/x-icon" href="{{ url_for('static', filename='favicon.ico') }}">-->
-<!--    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bulma/0.7.2/css/bulma.min.css" />-->
+    <link rel="shortcut icon" type="image/x-icon" href="{{ url_for('static', filename='favicon.ico') }}">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.3.1/css/bootstrap.min.css">
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
     <link rel="stylesheet" href="https://cdn.datatables.net/1.10.19/css/dataTables.bootstrap4.min.css">
-<!--    <link rel="stylesheet" href="https://cdn.rawgit.com/t4t5/sweetalert/v0.2.0/lib/sweet-alert.css">-->
     <link rel="stylesheet" href="{{ url_for('static', filename='css/main.css') }}">
 </head>
 
@@ -118,14 +116,14 @@
                     </thead>
                     <tbody>
                         {% for product in data %}
-                            <tr class="tr-row" data-id="{{product[0]}}">
+                            <tr class="tr-row" id="{{product[0]}}">
                                 <td>{{product[4]}}</td>
                                 <td>{{product[3]}}</td>
                                 <td>{{product[7]}}</td>
                                 <td>{{product[6]}}</td>
-                                <td>{{product[16]}}</td>
-                                <td>{{'%0.2f'| format(product[17]|float)}}</td>
-                                <td>{{'%0.2f'| format(product[18]|float)}}</td>
+                                <td>{% if product[16] %}{{'%0.2f'| format(product[16]|float)}}{% endif %} </td>
+                                <td>{% if product[17] %}{{'%0.2f'| format(product[17]|float)}}{% endif %}</td>
+                                <td>{% if product[18] %}{{'%0.2f'| format(product[18]|float)}}{% endif %}</td>
                                 <td>
                                     <i class="bookmark-icon fa {% if product[14] %} fa-bookmark pink-color {% else %} fa-bookmark-o {% endif %} cursor-pointer" aria-hidden="true"><span class="d-none">{% if product[14] %} bookmarked {% endif %}</span></i>
                                 </td>

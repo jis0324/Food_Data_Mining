@@ -8,6 +8,14 @@ body {
     display: block;
 }
 
+#products_table i {
+    font-size: 25px;
+}
+
+#products_table i:hover {
+    color: red;
+}
+
 .main-container {
     margin: 5% 10%;
 }
