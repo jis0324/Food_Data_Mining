@@ -20,7 +20,7 @@ from scrapy.selector import Selector
 
 base_dir = os.path.dirname(os.path.abspath(__file__))
 
-class ZillowScraper():
+class FooddataCrawler():
 
     # init
     def __init__(self):
@@ -131,13 +131,10 @@ class ZillowScraper():
                     "proxyType":"MANUAL",
                 }
                 chrome_option = webdriver.ChromeOptions()
-                # chrome_option.add_argument('--no-sandbox')
-                # chrome_option.add_argument('--disable-dev-shm-usage')
-                # chrome_option.add_argument('--ignore-certificate-errors')
-                # chrome_option.add_argument("--disable-blink-features=AutomationControlled")
-                chrome_option.add_argument("start-maximized")
-                chrome_option.add_experimental_option("excludeSwitches", ["enable-automation"])
-                chrome_option.add_experimental_option('useAutomationExtension', False)
+                chrome_option.add_argument('--no-sandbox')
+                chrome_option.add_argument('--disable-dev-shm-usage')
+                chrome_option.add_argument('--ignore-certificate-errors')
+                chrome_option.add_argument("--disable-blink-features=AutomationControlled")
                 chrome_option.add_argument('user-agent=Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_3) AppleWebKit/537.36 (KHTML, like Gecko) ' \
                     'Chrome/80.0.3987.132 Safari/537.36')
                 chrome_option.headless = True
@@ -797,8 +794,6 @@ class ZillowScraper():
                     product_url_list = list()
 
                     inventory_urls_list = website_row[14].split(',,')
-                    if len(inventory_urls_list) > 10:
-                        inventory_urls_list = inventory_urls_list[:10]
 
                     for inventory_uri in inventory_urls_list:
                         try:
@@ -892,6 +887,6 @@ def make_url(url):
 
 if __name__ == "__main__":
 
-    zillow_scraper = ZillowScraper()
-    zillow_scraper.start()
+    fooddata_crawler = FooddataCrawler()
+    fooddata_crawler.start()
     

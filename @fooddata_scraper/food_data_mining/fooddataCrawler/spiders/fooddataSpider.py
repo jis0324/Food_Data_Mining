@@ -96,11 +96,6 @@ class MySpider(CrawlSpider):
             if any(except_item in link.url for except_item in link_except_patterns):
                 continue
 
-            # ------------- For Test ------------------------
-            if '/protein-powders/' not in link.url:
-                continue
-            # -----------------------------------------------
-
             # print('*****', link.url)
 
             res.append(link)
