@@ -13,14 +13,20 @@ base_dir = os.path.dirname(os.path.abspath(__file__))
 @app.route('/', methods=['GET', 'POST'])
 def index():
   if request.method == "GET":
+    lastest_date = ''
     select_Query = "select * from catalogues where excludeYN = False"
     cursor.execute(select_Query)
     catalogues_records = cursor.fetchall()
 
-    select_latest_date = "select max(modifiedDate) from catalogues"
-    cursor.execute(select_latest_date)
-    lastest_date = cursor.fetchone()
-    return render_template("index.html", data=catalogues_records, last_crawling_date=lastest_date[0].strftime('%m/%d/%Y'))
+    if bool(catalogues_records):
+      select_latest_date = "select max(modifiedDate) from catalogues"
+      cursor.execute(select_latest_date)
+      lastest_date = cursor.fetchone()
+
+    if lastest_date:
+      lastest_date = lastest_date[0].strftime('%m/%d/%Y')
+
+    return render_template("index.html", data=catalogues_records, last_crawling_date=lastest_date)
 
   if request.method == "POST":
     return 'return data'
@@ -42,7 +48,6 @@ def get_excluded_products():
   except:
     print(traceback.print_exc())
     return 'False'
-
 
 @app.route('/get_unexcluded_products', methods=['POST'])
 def get_unexcluded_products():
@@ -140,6 +145,6 @@ if __name__ == "__main__":
   cursor = conn.cursor()
 
   if cursor:
-    app.run(debug=True)
+    app.run(debug=True, host='0.0.0.0', port=80)
   else:
     raise Exception('Raised some erro in creating cursor object, Please try again.')

@@ -781,6 +781,7 @@ class FooddataCrawler():
             finally:
                 if self.driver is not None:
                     self.driver.quit()
+                    self.driver = None
 
     # main function
     def start(self):
@@ -797,12 +798,15 @@ class FooddataCrawler():
 
                     for inventory_uri in inventory_urls_list:
                         try:
+                            # inventory product URLs list
+                            inventory_product_url_list = list()
+
                             # make inventory url
                             if "http" in inventory_uri:
                                 inventory_url = inventory_uri
                             else:
                                 inventory_url = "https://{}{}".format(make_domain(website_row[2]), inventory_uri)
-                            print('inventory URL : ', inventory_url)
+                            print('----- inventory URL : ', inventory_url, '-----')
 
                             # create web driver
                             self.driver = self.set_driver()
@@ -822,11 +826,11 @@ class FooddataCrawler():
                                         try:
                                             product_urls = self.driver.find_elements_by_xpath(product_xpath)
                                             for product_url in product_urls:
-                                                if product_url.get_attribute("href") and product_url.get_attribute("href") not in product_url_list:
-                                                    product_url_list.append(product_url.get_attribute("href"))
+                                                if product_url.get_attribute("href") and product_url.get_attribute("href") not in inventory_product_url_list:
+                                                    inventory_product_url_list.append(product_url.get_attribute("href"))
                                         except:
                                             continue
-                                    print("----- Found {} Product URLs -----".format(len(product_url_list)))
+                                    print("----- Found {} Product URLs -----".format(len(inventory_product_url_list)))
 
                                     # pagination event
                                     if website_row[16]:
@@ -850,11 +854,14 @@ class FooddataCrawler():
                         finally:
                             if self.driver is not None:
                                 self.driver.quit()
+                                self.driver = None
 
-                            print('----- Total Product URL Count : {} -----'.format(len(product_url_list)))
+                            # print('----- Total Product URL Count : {} -----'.format(len(product_url_list)))
+                            print('----- Total Inventory Product URL Count : {} -----'.format(len(inventory_product_url_list)))
+                            self.get_product_data(inventory_product_url_list)
 
                     # get product data
-                    self.get_product_data(product_url_list)
+                    # self.get_product_data(product_url_list)
 
                 except:
                     print(traceback.print_exc())
