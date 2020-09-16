@@ -1,4 +1,0 @@
-scrapy
-scrapy-rotated-proxy
-psycopg2
-requests
