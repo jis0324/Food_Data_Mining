@@ -63,37 +63,51 @@
             </div>
 
             <div class="criteria-search-wrapper mb-5 row">
-                <div class="category-filter-wrapper input-group col-lg-3 col-md-6 col-sm-12 mb-3">
+                <div class="category-filter-wrapper filter-div input-group col-lg-3 col-md-6 col-sm-12 mb-3">
                     <div class="input-group-prepend">
                         <span class="input-group-text pink-bg">Category</span>
                     </div>
                     <input type="text" class="form-control category_filter_input" placeholder="Category Filter">
                 </div>
 
-                <div class="brand-filter-wrapper input-group col-lg-3 col-md-6 col-sm-12 mb-3">
+                <div class="brand-filter-wrapper filter-div input-group col-lg-3 col-md-6 col-sm-12 mb-3">
                     <div class="input-group-prepend">
                         <span class="input-group-text pink-bg">Brand</span>
                     </div>
                     <input type="text" class="form-control brand_filter_input" placeholder="Brand Filter">
                 </div>
 
-                <div class="website-filter-wrapper input-group col-lg-3 col-md-6 col-sm-12 mb-3">
+                <div class="website-filter-wrapper filter-div input-group col-lg-3 col-md-6 col-sm-12 mb-3">
                     <div class="input-group-prepend">
                         <span class="input-group-text pink-bg">Website</span>
                     </div>
                     <input type="text" class="form-control website_filter_input" placeholder="Website URL Filter">
                 </div>
 
-                <div class="input-group col-lg-3 col-md-6 col-sm-12 mb-3 justify-content-between">
-                    <div class="input-group-prepend">
-                        <span class="input-group-text pink-bg">Bookmark Only?</span>
+                <div class="col-lg-3 col-md-6 col-sm-12 mb-3">
+                    <div class="input-group justify-content-between">
+                        <div class="input-group-prepend">
+                            <span class="input-group-text only-filter-span pink-bg">Bookmark Only?</span>
+                        </div>
+                        <div class="onoffswitch bookmark-onoffswitch">
+                            <input type="checkbox" name="onoffswitch" class="onoffswitch-checkbox" id="bookmarkonoffswitch" tabindex="0">
+                            <label class="onoffswitch-label m-0" for="bookmarkonoffswitch">
+                                <span class="onoffswitch-inner"></span>
+                                <span class="onoffswitch-switch"></span>
+                            </label>
+                        </div>
                     </div>
-                    <div class="onoffswitch">
-                        <input type="checkbox" name="onoffswitch" class="onoffswitch-checkbox" id="myonoffswitch" tabindex="0">
-                        <label class="onoffswitch-label m-0" for="myonoffswitch">
-                            <span class="onoffswitch-inner"></span>
-                            <span class="onoffswitch-switch"></span>
-                        </label>
+                    <div class="input-group justify-content-between">
+                        <div class="input-group-prepend">
+                            <span class="input-group-text only-filter-span pink-bg">Exclude Only?</span>
+                        </div>
+                        <div class="onoffswitch exclude-onoffswitch">
+                            <input type="checkbox" name="onoffswitch" class="onoffswitch-checkbox" id="excludeonoffswitch" tabindex="0">
+                            <label class="onoffswitch-label m-0" for="excludeonoffswitch">
+                                <span class="onoffswitch-inner"></span>
+                                <span class="onoffswitch-switch"></span>
+                            </label>
+                        </div>
                     </div>
                 </div>
 

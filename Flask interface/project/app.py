@@ -13,7 +13,7 @@ base_dir = os.path.dirname(os.path.abspath(__file__))
 @app.route('/', methods=['GET', 'POST'])
 def index():
   if request.method == "GET":
-    select_Query = "select * from catalogues"
+    select_Query = "select * from catalogues where excludeYN = False"
     cursor.execute(select_Query)
     catalogues_records = cursor.fetchall()
 
@@ -24,6 +24,43 @@ def index():
 
   if request.method == "POST":
     return 'return data'
+
+@app.route('/get_excluded_products', methods=['POST'])
+def get_excluded_products():
+  try:
+    sql_update_query = """select * from catalogues where excludeYN = True"""
+    cursor.execute(sql_update_query)
+    excluded_records = cursor.fetchall()
+
+    return_data = list()
+    for row in excluded_records:
+      row = list(row)
+      row[21] = str(row[21])
+      row[20] = str(row[20])
+      return_data.append(row)
+    return json.dumps(return_data)
+  except:
+    print(traceback.print_exc())
+    return 'False'
+
+
+@app.route('/get_unexcluded_products', methods=['POST'])
+def get_unexcluded_products():
+  try:
+    sql_update_query = """select * from catalogues where excludeYN = False"""
+    cursor.execute(sql_update_query)
+    excluded_records = cursor.fetchall()
+
+    return_data = list()
+    for row in excluded_records:
+      row = list(row)
+      row[21] = str(row[21])
+      row[20] = str(row[20])
+      return_data.append(row)
+    return json.dumps(return_data)
+  except:
+    print(traceback.print_exc())
+    return 'False'
 
 @app.route('/add_bookmark', methods=['POST'])
 def add_bookmark():

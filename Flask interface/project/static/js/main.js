@@ -38,39 +38,58 @@ $(document).ready(function () {
         table.columns(1).search(category_filter_key).draw();
     });
 
-    $('.onoffswitch .onoffswitch-checkbox').on('click', function() {
+    $('.bookmark-onoffswitch .onoffswitch-checkbox').on('click', function() {
         if ($(this).is(':checked')) {
-            $(this).attr('checked', true)
+            $(this).attr('checked', true);
         } else {
-            $(this).removeAttr('checked')
+            $(this).removeAttr('checked');
         }
 
         table.draw();
     });
 
-//    // hover bookmark icon
-//    $("#products_table").on("mouseenter", ".tr-row td .fa-bookmark-o", function () {
-//        $(this).removeClass("fa-bookmark-o");
-//        $(this).addClass("fa-bookmark");
-//        $(this).addClass("pink-color");
-//    });
-//
-//    // hover cancel bookmark icon
-//    $("#products_table").on("mouseleave", ".tr-row td .fa-bookmark", function () {
-//        $(this).addClass("fa-bookmark-o");
-//        $(this).removeClass("fa-bookmark");
-//        $(this).removeClass("pink-color");
-//    });
+    $('.exclude-onoffswitch .onoffswitch-checkbox').on('click', function() {
+        if ($(this).is(':checked')) {
+            $(this).attr('checked', true);
 
-//    // hover exclude icon
-//    $("#products_table").on("mouseenter", ".tr-row td .fa-times", function () {
-//        $(this).addClass("text-danger");
-//    });
-//
-//    // exclude cancel bookmark icon
-//    $("#products_table").on("mouseleave", ".tr-row td .fa-times", function () {
-//        $(this).removeClass("text-danger");
-//    });
+            $.ajax({
+                url: '/get_excluded_products',
+                type: 'POST',
+                contentType: 'application/json;charset=UTF-8',
+            }).done(function (response) { //
+                response = JSON.parse(response);
+                console.log(response);
+                table.clear();
+                if ($.fn.DataTable.isDataTable('#products_table')) {
+                    table.destroy();
+                }
+                $.each(response, function (i, data) {
+                    let tr_body = draw_tbody(data);
+                    $('#products_table').append(tr_body);
+                });
+                table = $('#products_table').DataTable();
+            });
+        } else {
+            $(this).removeAttr('checked');
+            $.ajax({
+                url: '/get_unexcluded_products',
+                type: 'POST',
+                contentType: 'application/json;charset=UTF-8',
+            }).done(function (response) { //
+                response = JSON.parse(response);
+                console.log(response);
+                table.clear();
+                if ($.fn.DataTable.isDataTable('#products_table')) {
+                    table.destroy();
+                }
+                $.each(response, function (i, data) {
+                    let tr_body = draw_tbody(data);
+                    $('#products_table').append(tr_body);
+                });
+                table = $('#products_table').DataTable();
+            });
+        }
+    });
 
     // click bookmark
     $("#products_table").on("click", ".tr-row td .bookmark-icon", function () {
@@ -204,9 +223,7 @@ $(document).ready(function () {
                 data: JSON.stringify({'uid' : product_uid}),
                 contentType: 'application/json;charset=UTF-8',
             }).done(function (response) { //
-                exclude_icon.removeClass("text-danger");
-                exclude_icon.find('span').html('');
-                table.draw();
+                table.row("#" + product_uid).remove().draw(false);
             });
         } else {
             $.ajax({
@@ -215,9 +232,7 @@ $(document).ready(function () {
                 data: JSON.stringify({'uid' : product_uid}),
                 contentType: 'application/json;charset=UTF-8',
             }).done(function (response) { //
-                exclude_icon.addClass("text-danger");
-                exclude_icon.find('span').html('excluded');
-                table.draw();
+                table.row("#" + product_uid).remove().draw(false);
             });
         }
     });
@@ -267,3 +282,48 @@ $.fn.dataTable.ext.search.push(
 
     }
 );
+
+function draw_tbody(data) {
+    let first_td = "<td>"+data[4]+"</td>";
+    let second_td = "<td>"+data[3]+"</td>";
+    let third_td = "<td>"+data[7]+"</td>";
+    let fourth_td = "<td>"+data[6]+"</td>";
+
+    let fifth_td = "";
+    if (data[16]) {
+        fifth_td = "<td>"+data[16]+"</td>"
+    } else {
+        fifth_td = "<td></td>"
+    }
+
+    let sixth_td = "";
+    if (data[17]) {
+        sixth_td = "<td>"+data[17]+"</td>"
+    } else {
+        sixth_td = "<td></td>"
+    }
+
+    let seventh_td = "";
+    if (data[18]) {
+        seventh_td = "<td>"+data[18]+"</td>"
+    } else {
+        seventh_td = "<td></td>"
+    }
+
+    let eighth_td = ''
+    if (data[14]) {
+        eighth_td = "<td><i class='bookmark-icon fa fa-bookmark pink-color cursor-pointer' aria-hidden='true'><span class='d-none'>bookmarked</span></i></td>";
+    } else {
+        eighth_td = "<td><i class='bookmark-icon fa fa-bookmark-o cursor-pointer' aria-hidden='true'><span class='d-none'></span></i></td>";
+    }
+
+    let ninth_td = ''
+    if (data[15]) {
+        ninth_td = "<td><i class='exclude-icon fa fa-times text-danger cursor-pointer' aria-hidden='true'><span class=d-none>exclude</span></i></td>";
+    } else {
+        ninth_td = "<td><i class='exclude-icon fa fa-times cursor-pointer' aria-hidden='true'><span class='d-none'></span></i></td>";
+    }
+
+    let tr_body = '<tr class="tr-row" id="'+data[0]+'">'+first_td+second_td+third_td+fourth_td+fifth_td+sixth_td+seventh_td+eighth_td+ninth_td+'</tr>';
+    return tr_body;
+}

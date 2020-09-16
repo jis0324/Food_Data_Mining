@@ -12,6 +12,17 @@ body {
     font-size: 25px;
 }
 
+.filter-div {
+    padding-top: 19px;
+    padding-bottom: 19px;
+}
+
+.only-filter-span {
+    width: 142px;
+    text-align: center;
+    display: block;
+}
+
 #products_table i:hover {
     color: red;
 }
