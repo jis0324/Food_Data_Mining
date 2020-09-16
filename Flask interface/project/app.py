@@ -17,7 +17,10 @@ def index():
     cursor.execute(select_Query)
     catalogues_records = cursor.fetchall()
 
-    return render_template("index.html", data=catalogues_records)
+    select_latest_date = "select max(modifiedDate) from catalogues"
+    cursor.execute(select_latest_date)
+    lastest_date = cursor.fetchone()
+    return render_template("index.html", data=catalogues_records, last_crawling_date=lastest_date[0].strftime('%m/%d/%Y'))
 
   if request.method == "POST":
     return 'return data'

@@ -124,13 +124,13 @@ $(document).ready(function () {
 
                     let ninth_td = ''
                     if (response[15]) {
-                        ninth_td = "<td><i class='exclude-icon fa fa-times text-danger' aria-hidden='true'><span class=d-none>exclude</span></i></td>";
+                        ninth_td = "<td><i class='exclude-icon fa fa-times text-danger cursor-pointer' aria-hidden='true'><span class=d-none>exclude</span></i></td>";
                     } else {
-                        ninth_td = "<td><i class='exclude-icon fa fa-times' aria-hidden='true'><span class='d-none'></span></i></td>";
+                        ninth_td = "<td><i class='exclude-icon fa fa-times cursor-pointer' aria-hidden='true'><span class='d-none'></span></i></td>";
                     }
 
                     let tr_row = [first_td, second_td, third_td, fourth_td, fifth_td, sixth_td, seventh_td, eighth_td, ninth_td]
-                    table.row("#" + product_uid).data(tr_row).invalidate().draw()
+                    table.row("#" + product_uid).data(tr_row).invalidate().draw(false)
                 }
             });
         } else {
@@ -180,13 +180,13 @@ $(document).ready(function () {
 
                     let ninth_td = ''
                     if (response[15]) {
-                        ninth_td = "<td><i class='exclude-icon fa fa-times text-danger' aria-hidden='true'><span class=d-none>exclude</span></i></td>";
+                        ninth_td = "<td><i class='exclude-icon fa fa-times text-danger cursor-pointer' aria-hidden='true'><span class=d-none>exclude</span></i></td>";
                     } else {
-                        ninth_td = "<td><i class='exclude-icon fa fa-times' aria-hidden='true'><span class='d-none'></span></i></td>";
+                        ninth_td = "<td><i class='exclude-icon fa fa-times cursor-pointer' aria-hidden='true'><span class='d-none'></span></i></td>";
                     }
 
                     let tr_row = [first_td, second_td, third_td, fourth_td, fifth_td, sixth_td, seventh_td, eighth_td, ninth_td]
-                    table.row("#" + product_uid).data(tr_row).invalidate().draw()
+                    table.row("#" + product_uid).data(tr_row).invalidate().draw(false)
                 }
             });
         }
