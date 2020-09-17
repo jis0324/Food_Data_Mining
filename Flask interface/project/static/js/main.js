@@ -16,26 +16,34 @@ $(document).ready(function () {
 
     // Global filter
     $('.global-search-wrapper .global-filter-input').on('keyup', function() {
+        show_loading();
         // Event listener to the two range filtering inputs to redraw on input
         table.draw();
+        hide_loading();
     });
 
     // Category Filter
     $('.criteria-search-wrapper .category_filter_input').on('keyup', function() {
+        show_loading();
         let category_filter_key = $('.criteria-search-wrapper .category_filter_input').val();
         table.columns(3).search(category_filter_key).draw();
+        hide_loading();
     });
 
     // Brand Filter
     $('.criteria-search-wrapper .brand_filter_input').on('keyup', function() {
+        show_loading();
         let category_filter_key = $('.criteria-search-wrapper .brand_filter_input').val();
         table.columns(2).search(category_filter_key).draw();
+        hide_loading();
     });
 
     // Website Filter
     $('.criteria-search-wrapper .website_filter_input').on('keyup', function() {
+        show_loading();
         let category_filter_key = $('.criteria-search-wrapper .website_filter_input').val();
         table.columns(1).search(category_filter_key).draw();
+        hide_loading();
     });
 
     $('.bookmark-onoffswitch .onoffswitch-checkbox').on('click', function() {
@@ -44,12 +52,14 @@ $(document).ready(function () {
         } else {
             $(this).removeAttr('checked');
         }
-
+        show_loading();
         table.draw();
-    });
+        hide_loading();
+   });
 
     $('.exclude-onoffswitch .onoffswitch-checkbox').on('click', function() {
-        if ($(this).is(':checked')) {
+       show_loading();
+       if ($(this).is(':checked')) {
             $(this).attr('checked', true);
 
             $.ajax({
@@ -89,10 +99,12 @@ $(document).ready(function () {
                 table = $('#products_table').DataTable();
             });
         }
+       hide_loading();
     });
 
     // click bookmark
     $("#products_table").on("click", ".tr-row td .bookmark-icon", function () {
+        show_loading();
         let bookmark_icon = $(this);
         let product_uid = bookmark_icon.parent().parent().attr('id');
 
@@ -109,7 +121,7 @@ $(document).ready(function () {
                     response = JSON.parse(response);
 
                     let first_td = "<td>"+response[4]+"</td>";
-                    let second_td = "<td><a href="{{product[3]}}" target='_blank'>"+data[3]+"</a></td>";
+                    let second_td = "<td><a href="+response[3]+" target='_blank'>"+response[3]+"</a></td>";
                     let third_td = "<td>"+response[7]+"</td>";
                     let fourth_td = "<td>"+response[6]+"</td>";
 
@@ -165,7 +177,7 @@ $(document).ready(function () {
                     response = JSON.parse(response);
 
                     let first_td = "<td>"+response[4]+"</td>";
-                    let second_td = "<td><a href="{{product[3]}}" target='_blank'>"+data[3]+"</a></td>";
+                    let second_td = "<td><a href="+response[3]+" target='_blank'>"+response[3]+"</a></td>";
                     let third_td = "<td>"+response[7]+"</td>";
                     let fourth_td = "<td>"+response[6]+"</td>";
 
@@ -208,8 +220,9 @@ $(document).ready(function () {
                     table.row("#" + product_uid).data(tr_row).invalidate().draw(false)
                 }
             });
-        }
-    });
+        };
+        hide_loading();
+   });
 
     // click exclude
     $("#products_table").on("click", ".tr-row td .exclude-icon", function () {
@@ -237,6 +250,8 @@ $(document).ready(function () {
         }
     });
 
+    // hide loading, show table
+    hide_loading();
 });
 
 $.fn.dataTable.ext.search.push(
@@ -285,7 +300,7 @@ $.fn.dataTable.ext.search.push(
 
 function draw_tbody(data) {
     let first_td = "<td>"+data[4]+"</td>";
-    let second_td = "<td><a href="{{product[3]}}" target='_blank'>"+data[3]+"</a></td>";
+    let second_td = "<td><a href="+data[3]+" target='_blank'>"+data[3]+"</a></td>";
     let third_td = "<td>"+data[7]+"</td>";
     let fourth_td = "<td>"+data[6]+"</td>";
 
@@ -326,4 +341,14 @@ function draw_tbody(data) {
 
     let tr_body = '<tr class="tr-row" id="'+data[0]+'">'+first_td+second_td+third_td+fourth_td+fifth_td+sixth_td+seventh_td+eighth_td+ninth_td+'</tr>';
     return tr_body;
-}
+};
+
+function show_loading() {
+  $('.loading-section').removeClass('d-none');
+  $('.product-table-wrapper').addClass('d-none');
+};
+
+function hide_loading() {
+  $('.loading-section').addClass('d-none');
+  $('.product-table-wrapper').removeClass('d-none');
+};
