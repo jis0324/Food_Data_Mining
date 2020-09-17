@@ -109,7 +109,7 @@ $(document).ready(function () {
                     response = JSON.parse(response);
 
                     let first_td = "<td>"+response[4]+"</td>";
-                    let second_td = "<td>"+response[3]+"</td>";
+                    let second_td = "<td><a href="{{product[3]}}" target='_blank'>"+data[3]+"</a></td>";
                     let third_td = "<td>"+response[7]+"</td>";
                     let fourth_td = "<td>"+response[6]+"</td>";
 
@@ -165,7 +165,7 @@ $(document).ready(function () {
                     response = JSON.parse(response);
 
                     let first_td = "<td>"+response[4]+"</td>";
-                    let second_td = "<td>"+response[3]+"</td>";
+                    let second_td = "<td><a href="{{product[3]}}" target='_blank'>"+data[3]+"</a></td>";
                     let third_td = "<td>"+response[7]+"</td>";
                     let fourth_td = "<td>"+response[6]+"</td>";
 
@@ -285,7 +285,7 @@ $.fn.dataTable.ext.search.push(
 
 function draw_tbody(data) {
     let first_td = "<td>"+data[4]+"</td>";
-    let second_td = "<td>"+data[3]+"</td>";
+    let second_td = "<td><a href="{{product[3]}}" target='_blank'>"+data[3]+"</a></td>";
     let third_td = "<td>"+data[7]+"</td>";
     let fourth_td = "<td>"+data[6]+"</td>";
 

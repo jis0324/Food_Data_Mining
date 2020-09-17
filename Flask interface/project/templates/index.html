@@ -132,7 +132,7 @@
                         {% for product in data %}
                             <tr class="tr-row" id="{{product[0]}}">
                                 <td>{{product[4]}}</td>
-                                <td>{{product[3]}}</td>
+                                <td><a href="{{product[3]}}" target="_blank">{{product[3]}}</a></td>
                                 <td>{{product[7]}}</td>
                                 <td>{{product[6]}}</td>
                                 <td>{% if product[16] %}{{'%0.2f'| format(product[16]|float)}}{% endif %} </td>
