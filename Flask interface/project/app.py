@@ -43,6 +43,9 @@ def get_excluded_products():
       row = list(row)
       row[21] = str(row[21])
       row[20] = str(row[20])
+      if row[19]:
+        row[19] = str(row[19])
+      
       return_data.append(row)
     return json.dumps(return_data)
   except:
@@ -61,6 +64,8 @@ def get_unexcluded_products():
       row = list(row)
       row[21] = str(row[21])
       row[20] = str(row[20])
+      if row[19]:
+        row[19] = str(row[19])
       return_data.append(row)
     return json.dumps(return_data)
   except:
@@ -70,6 +75,7 @@ def get_unexcluded_products():
 @app.route('/add_bookmark', methods=['POST'])
 def add_bookmark():
   try:
+    print(request)
     sql_update_query = """Update catalogues set bookmark = %s where uid = %s"""
     cursor.execute(sql_update_query, (True, request.json['uid']))
     cursor.execute("SELECT * FROM catalogues WHERE uid = %s", (request.json['uid'],))
@@ -77,6 +83,9 @@ def add_bookmark():
     row = list(row)
     row[21] = str(row[21])
     row[20] = str(row[20])
+    if row[19]:
+        row[19] = str(row[19])
+      
     return json.dumps(row)
   except:
     print(traceback.print_exc())
@@ -92,8 +101,10 @@ def remove_bookmark():
     row = list(row)
     row[21] = str(row[21])
     row[20] = str(row[20])
+    if row[19]:
+        row[19] = str(row[19])
+      
     return json.dumps(row)
-    return 'True'
   except:
     print(traceback.print_exc())
     return 'False'

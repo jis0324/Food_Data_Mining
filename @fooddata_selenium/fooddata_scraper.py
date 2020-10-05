@@ -98,7 +98,7 @@ class FooddataCrawler():
 
             for row in websites_records:
                 if row[2] and row[13] == "B" and row[4] == "No":
-                    if 'Target' in row[1]:
+                    if 'Luckyvitamin' in row[1]:
                         self.website_list.append(row)
 
             # close communication with the PostgreSQL database server
@@ -331,6 +331,7 @@ class FooddataCrawler():
         product_name_pattern_list = [
             { 'xpath' : '//h1[@itemprop="name"]', 'key': 'name', 'type': 'itemprop'},
             { 'xpath' : '//h1', 'key' : 'productname', 'type' : 'id'},
+            { 'xpath' : '//h1', 'key' : 'product,detail,title', 'type' : 'class'},
             { 'xpath' : '//h1', 'key' : 'product_name', 'type' : 'class'},
             { 'xpath' : '//div', 'key' : 'product_name', 'type' : 'class'},
             { 'xpath' : '//h2', 'key': 'product-title', 'type': 'class'},
@@ -391,6 +392,7 @@ class FooddataCrawler():
         product_category_pattern_list = [
             {'xpath': '//*[@data-set="breadcrumb"]', 'key': 'breadcrumb', 'type': 'data-set'},
             {'xpath': '//*[@data-test="breadcrumb"]', 'key': 'breadcrumb', 'type': 'data-test'},
+            {'xpath': '//*[@aria-label="breadcrumbs"]', 'key': '', 'type': ''},
             {'xpath': '//ol', 'key': 'breadcrumbs', 'type': 'class'},
             {'xpath': '//ol', 'key': 'BreadcrumbList', 'type': 'typeof'},
         ]
@@ -621,7 +623,7 @@ class FooddataCrawler():
                 final_dict['current_price'] = self.get_product_price()
 
                 # get product img url
-                if "images" in upc_attrs and upc_attrs["images"]:
+                if upc_attrs and "images" in upc_attrs and upc_attrs["images"]:
                     final_dict['img_url'] = upc_attrs["images"][0]
                 else:
                     final_dict['img_url'] = self.get_product_img_url()
@@ -817,6 +819,9 @@ class FooddataCrawler():
                             pagination_flag = True
                             while pagination_flag:
                                 try:
+                                    if "Please verify you are a human" in self.driver.page_source:
+                                        print("----- Capcha Raised -----")
+
                                     WebDriverWait(self.driver, 30).until(EC.presence_of_element_located((By.XPATH, website_row[15].split(',,')[0])))
                                     self.driver.execute_script("window.scrollTo(0, document.body.scrollHeight);")
                                     time.sleep(5)

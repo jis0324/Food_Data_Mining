@@ -27,7 +27,42 @@ def create_tables():
     """ create tables in the PostgreSQL database"""
     commands = (
         """
+        DROP TABLE catalogues
+        """,
+        """
         DROP TABLE websites
+        """,
+        """
+        CREATE EXTENSION IF NOT EXISTS "uuid-ossp";
+        SELECT uuid_generate_v1();
+        """
+        """
+        CREATE TABLE catalogues (
+            UID uuid DEFAULT uuid_generate_v1(),
+            SiteName VARCHAR(100),
+            SiteHomepage VARCHAR(100),
+            ProductURL VARCHAR(255),
+            ProductName VARCHAR(255),
+            ProductDescription TEXT,
+            ProductCategory VARCHAR(255),
+            ProductBrand VARCHAR(255),
+            UPC VARCHAR(50),
+            upcCategory VARCHAR(255),
+            upcBrand VARCHAR(100),
+            upcSize VARCHAR(100),
+            upcDimension VARCHAR(100),
+            upcIngredients TEXT,
+            bookmark BOOLEAN DEFAULT FALSE,
+            excludeYN BOOLEAN DEFAULT FALSE,
+            lastPrice FLOAT,
+            currentPrice FLOAT,
+            percentFromLastPrice FLOAT,
+            datePriceChange date,
+            dateCreated date,
+            modifiedDate date default CURRENT_DATE,
+            productImage VARCHAR(255),
+            PRIMARY KEY (UID)
+        )
         """,
         """
         CREATE TABLE websites (

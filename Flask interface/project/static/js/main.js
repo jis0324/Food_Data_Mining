@@ -15,7 +15,7 @@ $(document).ready(function () {
     });
 
     // Global filter
-    $('.global-search-wrapper .global-filter-input').on('keyup', function() {
+    $('.global-search-wrapper .global-filter-input').on('keyup', function () {
         show_loading();
         // Event listener to the two range filtering inputs to redraw on input
         table.draw();
@@ -23,7 +23,7 @@ $(document).ready(function () {
     });
 
     // Category Filter
-    $('.criteria-search-wrapper .category_filter_input').on('keyup', function() {
+    $('.criteria-search-wrapper .category_filter_input').on('keyup', function () {
         show_loading();
         let category_filter_key = $('.criteria-search-wrapper .category_filter_input').val();
         table.columns(3).search(category_filter_key).draw();
@@ -31,7 +31,7 @@ $(document).ready(function () {
     });
 
     // Brand Filter
-    $('.criteria-search-wrapper .brand_filter_input').on('keyup', function() {
+    $('.criteria-search-wrapper .brand_filter_input').on('keyup', function () {
         show_loading();
         let category_filter_key = $('.criteria-search-wrapper .brand_filter_input').val();
         table.columns(2).search(category_filter_key).draw();
@@ -39,14 +39,14 @@ $(document).ready(function () {
     });
 
     // Website Filter
-    $('.criteria-search-wrapper .website_filter_input').on('keyup', function() {
+    $('.criteria-search-wrapper .website_filter_input').on('keyup', function () {
         show_loading();
         let category_filter_key = $('.criteria-search-wrapper .website_filter_input').val();
         table.columns(1).search(category_filter_key).draw();
         hide_loading();
     });
 
-    $('.bookmark-onoffswitch .onoffswitch-checkbox').on('click', function() {
+    $('.bookmark-onoffswitch .onoffswitch-checkbox').on('click', function () {
         if ($(this).is(':checked')) {
             $(this).attr('checked', true);
         } else {
@@ -55,11 +55,11 @@ $(document).ready(function () {
         show_loading();
         table.draw();
         hide_loading();
-   });
+    });
 
-    $('.exclude-onoffswitch .onoffswitch-checkbox').on('click', function() {
-       show_loading();
-       if ($(this).is(':checked')) {
+    $('.exclude-onoffswitch .onoffswitch-checkbox').on('click', function () {
+        show_loading();
+        if ($(this).is(':checked')) {
             $(this).attr('checked', true);
 
             $.ajax({
@@ -77,7 +77,10 @@ $(document).ready(function () {
                     let tr_body = draw_tbody(data);
                     $('#products_table').append(tr_body);
                 });
-                table = $('#products_table').DataTable();
+                table = $('#products_table').DataTable({
+                    "dom": '<"top">rt<"bottom"lp><"clear">'
+                });
+                hide_loading();
             });
         } else {
             $(this).removeAttr('checked');
@@ -86,8 +89,8 @@ $(document).ready(function () {
                 type: 'POST',
                 contentType: 'application/json;charset=UTF-8',
             }).done(function (response) { //
-                response = JSON.parse(response);
                 console.log(response);
+                response = JSON.parse(response);
                 table.clear();
                 if ($.fn.DataTable.isDataTable('#products_table')) {
                     table.destroy();
@@ -96,10 +99,12 @@ $(document).ready(function () {
                     let tr_body = draw_tbody(data);
                     $('#products_table').append(tr_body);
                 });
-                table = $('#products_table').DataTable();
+                table = $('#products_table').DataTable({
+                    "dom": '<"top">rt<"bottom"lp><"clear">'
+                });
+                hide_loading();
             });
         }
-       hide_loading();
     });
 
     // click bookmark
@@ -112,7 +117,7 @@ $(document).ready(function () {
             $.ajax({
                 url: '/add_bookmark',
                 type: 'POST',
-                data: JSON.stringify({'uid' : product_uid}),
+                data: JSON.stringify({ 'uid': product_uid }),
                 contentType: 'application/json;charset=UTF-8',
             }).done(function (response) {
                 if (response == 'False') {
@@ -120,28 +125,28 @@ $(document).ready(function () {
                 } else {
                     response = JSON.parse(response);
 
-                    let first_td = "<td>"+response[4]+"</td>";
-                    let second_td = "<td><a href="+response[3]+" target='_blank'>"+response[3]+"</a></td>";
-                    let third_td = "<td>"+response[7]+"</td>";
-                    let fourth_td = "<td>"+response[6]+"</td>";
+                    let first_td = "<td>" + response[4] + "</td>";
+                    let second_td = "<td><a href=" + response[3] + " target='_blank'>" + response[3] + "</a></td>";
+                    let third_td = "<td>" + response[7] + "</td>";
+                    let fourth_td = "<td>" + response[6] + "</td>";
 
                     let fifth_td = "";
                     if (response[16]) {
-                        fifth_td = "<td>"+response[16]+"</td>"
+                        fifth_td = "<td>" + response[16] + "</td>"
                     } else {
                         fifth_td = "<td></td>"
                     }
 
                     let sixth_td = "";
                     if (response[17]) {
-                        sixth_td = "<td>"+response[17]+"</td>"
+                        sixth_td = "<td>" + response[17] + "</td>"
                     } else {
                         sixth_td = "<td></td>"
                     }
 
                     let seventh_td = "";
                     if (response[18]) {
-                        seventh_td = "<td>"+response[18]+"</td>"
+                        seventh_td = "<td>" + response[18] + "</td>"
                     } else {
                         seventh_td = "<td></td>"
                     }
@@ -163,12 +168,13 @@ $(document).ready(function () {
                     let tr_row = [first_td, second_td, third_td, fourth_td, fifth_td, sixth_td, seventh_td, eighth_td, ninth_td]
                     table.row("#" + product_uid).data(tr_row).invalidate().draw(false)
                 }
+                hide_loading();
             });
         } else {
             $.ajax({
                 url: '/remove_bookmark',
                 type: 'POST',
-                data: JSON.stringify({'uid' : product_uid}),
+                data: JSON.stringify({ 'uid': product_uid }),
                 contentType: 'application/json;charset=UTF-8',
             }).done(function (response) {
                 if (response == 'False') {
@@ -176,28 +182,28 @@ $(document).ready(function () {
                 } else {
                     response = JSON.parse(response);
 
-                    let first_td = "<td>"+response[4]+"</td>";
-                    let second_td = "<td><a href="+response[3]+" target='_blank'>"+response[3]+"</a></td>";
-                    let third_td = "<td>"+response[7]+"</td>";
-                    let fourth_td = "<td>"+response[6]+"</td>";
+                    let first_td = "<td>" + response[4] + "</td>";
+                    let second_td = "<td><a href=" + response[3] + " target='_blank'>" + response[3] + "</a></td>";
+                    let third_td = "<td>" + response[7] + "</td>";
+                    let fourth_td = "<td>" + response[6] + "</td>";
 
                     let fifth_td = "";
                     if (response[16]) {
-                        fifth_td = "<td>"+response[16]+"</td>"
+                        fifth_td = "<td>" + response[16] + "</td>"
                     } else {
                         fifth_td = "<td></td>"
                     }
 
                     let sixth_td = "";
                     if (response[17]) {
-                        sixth_td = "<td>"+response[17]+"</td>"
+                        sixth_td = "<td>" + response[17] + "</td>"
                     } else {
                         sixth_td = "<td></td>"
                     }
 
                     let seventh_td = "";
                     if (response[18]) {
-                        seventh_td = "<td>"+response[18]+"</td>"
+                        seventh_td = "<td>" + response[18] + "</td>"
                     } else {
                         seventh_td = "<td></td>"
                     }
@@ -219,13 +225,14 @@ $(document).ready(function () {
                     let tr_row = [first_td, second_td, third_td, fourth_td, fifth_td, sixth_td, seventh_td, eighth_td, ninth_td]
                     table.row("#" + product_uid).data(tr_row).invalidate().draw(false)
                 }
+                hide_loading();
             });
         };
-        hide_loading();
-   });
+    });
 
     // click exclude
     $("#products_table").on("click", ".tr-row td .exclude-icon", function () {
+        show_loading();
         let exclude_icon = $(this);
         let product_uid = exclude_icon.parent().parent().attr('id');
 
@@ -233,19 +240,21 @@ $(document).ready(function () {
             $.ajax({
                 url: '/remove_exclude',
                 type: 'POST',
-                data: JSON.stringify({'uid' : product_uid}),
+                data: JSON.stringify({ 'uid': product_uid }),
                 contentType: 'application/json;charset=UTF-8',
             }).done(function (response) { //
                 table.row("#" + product_uid).remove().draw(false);
+                hide_loading();
             });
         } else {
             $.ajax({
                 url: '/add_exclude',
                 type: 'POST',
-                data: JSON.stringify({'uid' : product_uid}),
+                data: JSON.stringify({ 'uid': product_uid }),
                 contentType: 'application/json;charset=UTF-8',
             }).done(function (response) { //
                 table.row("#" + product_uid).remove().draw(false);
+                hide_loading();
             });
         }
     });
@@ -255,7 +264,7 @@ $(document).ready(function () {
 });
 
 $.fn.dataTable.ext.search.push(
-    function( settings, data, dataIndex ) {
+    function (settings, data, dataIndex) {
         let filter_key = $('.global-search-wrapper .global-filter-input').val();
         let filter_type = $(".global-search-sel-btn").html()
 
@@ -266,7 +275,7 @@ $.fn.dataTable.ext.search.push(
         }
 
         if (filter_type == 'All') {
-            for (let i=0; i < data.length; i++) {
+            for (let i = 0; i < data.length; i++) {
                 if (data[i].includes(filter_key)) {
                     if (interface_bookmark_flag) {
                         if (data[7].includes('bookmarked')) {
@@ -299,28 +308,28 @@ $.fn.dataTable.ext.search.push(
 );
 
 function draw_tbody(data) {
-    let first_td = "<td>"+data[4]+"</td>";
-    let second_td = "<td><a href="+data[3]+" target='_blank'>"+data[3]+"</a></td>";
-    let third_td = "<td>"+data[7]+"</td>";
-    let fourth_td = "<td>"+data[6]+"</td>";
+    let first_td = "<td>" + data[4] + "</td>";
+    let second_td = "<td><a href=" + data[3] + " target='_blank'>" + data[3] + "</a></td>";
+    let third_td = "<td>" + data[7] + "</td>";
+    let fourth_td = "<td>" + data[6] + "</td>";
 
     let fifth_td = "";
     if (data[16]) {
-        fifth_td = "<td>"+data[16]+"</td>"
+        fifth_td = "<td>" + data[16] + "</td>"
     } else {
         fifth_td = "<td></td>"
     }
 
     let sixth_td = "";
     if (data[17]) {
-        sixth_td = "<td>"+data[17]+"</td>"
+        sixth_td = "<td>" + data[17] + "</td>"
     } else {
         sixth_td = "<td></td>"
     }
 
     let seventh_td = "";
     if (data[18]) {
-        seventh_td = "<td>"+data[18]+"</td>"
+        seventh_td = "<td>" + data[18] + "</td>"
     } else {
         seventh_td = "<td></td>"
     }
@@ -339,16 +348,16 @@ function draw_tbody(data) {
         ninth_td = "<td><i class='exclude-icon fa fa-times cursor-pointer' aria-hidden='true'><span class='d-none'></span></i></td>";
     }
 
-    let tr_body = '<tr class="tr-row" id="'+data[0]+'">'+first_td+second_td+third_td+fourth_td+fifth_td+sixth_td+seventh_td+eighth_td+ninth_td+'</tr>';
+    let tr_body = '<tr class="tr-row" id="' + data[0] + '">' + first_td + second_td + third_td + fourth_td + fifth_td + sixth_td + seventh_td + eighth_td + ninth_td + '</tr>';
     return tr_body;
 };
 
 function show_loading() {
-  $('.loading-section').removeClass('d-none');
-  $('.product-table-wrapper').addClass('d-none');
+    $('.loading-section').removeClass('d-none');
+    $('.product-table-wrapper').addClass('d-none');
 };
 
 function hide_loading() {
-  $('.loading-section').addClass('d-none');
-  $('.product-table-wrapper').removeClass('d-none');
+    $('.loading-section').addClass('d-none');
+    $('.product-table-wrapper').removeClass('d-none');
 };
